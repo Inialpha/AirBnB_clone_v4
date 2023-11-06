@@ -14,15 +14,17 @@ $(function () {
 		$('div.amenities h4').text(am);
 	});
 	$.ajax({
-	  type: 'GET',
-	  url: 'http://0.0.0.0:5001/api/v1/status/',
-	  dataType: 'json',
-	  success: function (response) {
-	    if (response.status === 'OK') {
-	      $('div#api_status').addClass('available');
-	    } else {
-	      $('div#api_status').removeClass('available');
-	    }
-	  }
+		type: 'GET',
+		url: 'http://0.0.0.0:5001/api/v1/status/',
+		success: function (response) {
+			if (response.status === 'OK') {
+				$('div#api_status').addClass('available');
+			} else {
+				$('div#api_status').removeClass('available');
+				$('div#api_status').css('background-color', '#ccc');
+			}
+
+		}
+
 	});
 });

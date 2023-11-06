@@ -1,19 +1,39 @@
 $(function () {
-	let dict = {};
-	$('input').on('change', function () {
-		if ($(this).is(':checked')) {
-			dict[$(this).data('id')] = $(this).data('name')
-		} else {
-			delete dict[$(this).data('id')]
+	let states = {};
+	let cities = {};
+	let amenities = {};
+	$('input').on('change', function (obj) {
+		let i = obj.target;
+		if (i.id === 'state') {
+			if ($(this).is(':checked')) {
+				states[$(this).data('id')] = $(this).data('name')
+			} else {
+				delete cities[$(this).data('id')]
+			}
+			$('div.locations h4').text(Object.values(Object.assign({}, states, cities)).sort().join(", "));
 		}
-		let am = ''
-		for (let i in dict) {
-			am += dict[i];
-			am += ', ';
+		if (i.id === 'city') {
+			if ($(this).is(':checked')) {
+				cities[$(this).data('id')] = $(this).data('name')
+			} else {
+				delete cities[$(this).data('id')]
+			}
+			$('div.locations h4').text(Object.values(Object.assign({}, cities, states)).sort().join(", "));
 		}
-		$('div.amenities h4').text(am);
-
+		if (i.id === 'amenity') {
+			if ($(this).is(':checked')) {
+				amenities[$(this).data('id')] = $(this).data('name')
+			} else {
+				delete amenities[$(this).data('id')]
+			}
+			$('div.amenities h4').text(Object.values(amenities).sort().join(", "));
+		}
 	});
+
+	$(get)
+});
+
+
 
 	$.ajax({
 	  type: 'GET',
@@ -54,7 +74,7 @@ $(function () {
 		'</div>',
 		'</div>',
 		'<div class="user">',
-		'<b>Owner:</b>'
+		'<b>Owner:</b>' + response[i].user.first_name +  place.user.last_name,
 		'</div>',
 		'<div class="description">',
 		response[i].description,
@@ -71,15 +91,14 @@ $(function () {
 	});
 
 	$('button').on('click', function () {
-	  let amenities = {};
-	  $('input[type=checkbox]:checked').each(function () {
-	    amenities[$(this).attr('data-id')] = $(this).attr('data-name');
-	  });
-
 	  $.ajax({
 	    type: 'POST',
 	    url: 'http://0.0.0.0:5001/api/v1/places_search/',
-	    data: JSON.stringify(amenities),
+	    data: JSON.stringify({
+		    amenities: Object.values(amenities),
+		    states: Object.values(states),
+		    cities: Object.values(cities)
+	    }),
 	    contentType: 'application/json',
 	    success: function (response) {
 	      $('section.places').empty();
@@ -120,4 +139,6 @@ $(function () {
 	    }
 	  });
 	});
-});
+
+
+});*/
