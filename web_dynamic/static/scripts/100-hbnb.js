@@ -30,9 +30,6 @@ $(function () {
 		}
 	});
 
-	$(get)
-});
-
 
 
 	$.ajax({
@@ -48,46 +45,42 @@ $(function () {
 	  }
 	});
 
-
+	
 	$.ajax({
 	  type: 'POST',
 	  url: 'http://0.0.0.0:5001/api/v1/places_search/',
-	  dataType: 'json',
 	  contentType: 'application/json',
 	  data: JSON.stringify({}),
 	  success: function (response) {
-	    for (let i in response) {
-	      let article = [
-		'<article>',
-		'<div class="title_box">',
-		'<h2>' + response[i].name + '</h2>',
-		'<div class="price_by_night">',
-		response[i].price_by_night,
-		'</div>',
-		'</div>',
-		'<div class="information">',
-		'<div class="max_guest">' +  response[i].max_guest + 'Guests',
-		'</div>',
-		'<div class="number_rooms">' + response[i].number_rooms + 'Bedrooms',
-		'</div>',
-		'<div class="number_bathrooms">' + response[i].number_bathrooms + 'Bathroom',
-		'</div>',
-		'</div>',
-		'<div class="user">',
-		'<b>Owner:</b>' + response[i].user.first_name +  place.user.last_name,
-		'</div>',
-		'<div class="description">',
-		response[i].description,
-		'</div>',
-		'</article>'
-	      ];
-	      $(article.join('')).appendTo('section.places');
-	    }
-	  },
-	  error: function (xhr, status, error) {
-	    console.log(error)
-	  }
+		  $("section.places").empty();
 
+		  response.forEach((value) => {
+
+			  $('section.places').append(`<article>
+		<div class="title_box">
+			<h2>${value.name}</h2>
+			<div class="price_by_night">
+			${value.price_by_night}</div>
+			</div>
+			<div class="information">
+			<div class="max_guest">
+			${value.max_guest} Guests
+			</div>
+			<div class="number_rooms">
+			${value.number_rooms} Bedrooms</div>
+			<div class="number_bathrooms">
+			${value.number_bathrooms} Bathroom</div>
+			</div>
+			<div class="user">
+			<b>Owner:</b>
+			</div>
+			<div class="description">
+			${value.description}
+			</div>
+
+				  </article>`)
+	  });
+		}
 	});
 
 	$('button').on('click', function () {
@@ -100,45 +93,37 @@ $(function () {
 		    cities: Object.values(cities)
 	    }),
 	    contentType: 'application/json',
-	    success: function (response) {
-	      $('section.places').empty();
+		  success: function (response) {
+		  $("section.places").empty();
+			alert(response);
+		  response.forEach((value) => {
 
-	      $.each(response, function(key, value) {
-                const articleHTML = `
-		<article>
-                	<div class="title_box">
-                		<h2>${value.name}</h2>
-                		<div class="price_by_night">
-                			${value.price_by_night}
-                		</div>
-                	</div>
-                	<div class="information">
-                		<div class="max_guest">
-					${value.max_guest} Guests
-                		</div>
-                		<div class="number_rooms">
-					${value.number_rooms} Bedrooms
-				</div>
-                		<div class="number_bathrooms">
-					${value.number_bathrooms} Bathroom
-                		</div>
-                	</div>
-                	<div class="user">
-                		<b>Owner:</b>
-					${value.user.first_name} ${value.user.last_name}
-                	</div>
-                	<div class="description">
-                		${value.description}
-                	</div>
-                </article>`
-              $('section.places').append(articleHTML);
-	      })
-	    },
-	    error: function (xhr, status, error) {
-	      console.log(error)
-	    }
-	  });
+			  $('section.places').append(`<article>
+		<div class="title_box">
+			<h2>${value.name}</h2>
+			<div class="price_by_night">
+			${vaLue.price_by_night}</div>
+			</div>
+			<div class="information">
+			<div class="max_guest">
+			${value.max_guest} Guests
+			</div>
+			<div class="number_rooms">
+			${value.number_rooms} Bedrooms</div>
+			<div class="number_bathrooms">
+			${value.number_bathrooms} Bathroom</div>
+			</div>
+			<div class="user">
+			<b>Owner:</b>
+			</div>
+			<div class="description">
+			${value.description}
+			</div>
+
+				  </article>`)
+		  });
+		  }
+	});
 	});
 
-
-});*/
+});
